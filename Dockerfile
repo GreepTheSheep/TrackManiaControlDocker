@@ -1,6 +1,6 @@
 FROM php:8.2-alpine
 
-RUN apk add --no-cache curl curl-dev pkgconf libcurl libxml2 php-curl git xmlstarlet
+RUN apk add --no-cache curl curl-dev pkgconf libcurl libxml2-dev php-curl git xmlstarlet
 
 # Install PHP dependencies
 RUN docker-php-ext-install \
