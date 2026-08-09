@@ -28,4 +28,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: git.greep.fr/${{ gitea.repository_owner }}/TrackManiaControl:latest
+          tags: git.greep.fr/${{ gitea.repository_owner }}/trackmaniacontrol:latest
