@@ -1,14 +1,14 @@
 FROM php:8.2-alpine
 
 # Install PHP dependencies
-RUN apk add --no-cache \
-    php-mysqli \
-    php-curl \
-    php-xml \
-    php-simplexml \
-    php-zlib \
-    php-zip \
-    php-mbstring
+RUN docker-php-ext-install \
+    mysqli \
+    curl \
+    xml \
+    simplexml \
+    zlib \
+    zip \
+    mbstring
 
 RUN apk add --no-cache git xmlstarlet
 
