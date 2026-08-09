@@ -31,4 +31,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ gitea.repository_owner }}/trackmaniacontrol:latest
+          tags: ghcr.io/${{ github.repository_owner }}/trackmaniacontrol:latest
