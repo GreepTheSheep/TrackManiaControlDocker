@@ -19,11 +19,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
+      - name: downcase REPOSITORY_OWNER
+        run: |
+          echo "REPOSITORY_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> ${GITHUB_ENV}
+
       - name: Login to Container Registry
         uses: docker/login-action@v4
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
+          username: ${{ env.REPOSITORY_OWNER }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build & Push to Container Registry
@@ -31,4 +35,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/trackmaniacontrol:latest
+          tags: ghcr.io/${{ env.REPOSITORY_OWNER }}/trackmaniacontrol:latest
