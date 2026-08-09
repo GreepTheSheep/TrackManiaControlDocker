@@ -1,0 +1,34 @@
+name: Build & Push TrackMania Control (Github)
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    # rebuild les lundis à 1am UTC
+    - cron: '0 1 * * 1'
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Login to Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build & Push to Container Registry
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ gitea.repository_owner }}/trackmaniacontrol:latest
