@@ -1,5 +1,7 @@
 FROM php:8.2-alpine
 
+RUN apk add --no-cache curl curl-dev pkgconf libcurl php-curl git xmlstarlet
+
 # Install PHP dependencies
 RUN docker-php-ext-install \
     mysqli \
@@ -9,8 +11,6 @@ RUN docker-php-ext-install \
     zlib \
     zip \
     mbstring
-
-RUN apk add --no-cache git xmlstarlet
 
 RUN git clone https://git.virtit.fr/beu/TrackManiaControl.git /controller
 
