@@ -70,8 +70,6 @@ services:
     restart: unless-stopped
     environment:
       TM_SYSTEM_XMLRPC_ALLOWREMOTE: "True"
-    expose:
-      - 5001
     ports:
       - 2351:2350/tcp
       - 2351:2350/udp
@@ -84,7 +82,6 @@ services:
     restart: unless-stopped
     environment:
       SERVER_HOST: trackmania
-      SERVER_PORT: "5001"
       DATABASE_HOST: mariadb
       DATABASE_USER: maniacontrol
       DATABASE_PASS: maniacontrol
