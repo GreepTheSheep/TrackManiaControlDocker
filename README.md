@@ -62,7 +62,7 @@ services:
       timeout: 5s
       retries: 3
     volumes:
-      - TrackManiaControl:/var/lib/mysql
+      - TrackManiaControlDatabase:/var/lib/mysql
 
   trackmania:
     image: evoesports/trackmania
@@ -70,6 +70,7 @@ services:
     restart: unless-stopped
     environment:
       TM_SYSTEM_XMLRPC_ALLOWREMOTE: "True"
+      TM_SERVER_NAME: "Local server"
     ports:
       - 2351:2350/tcp
       - 2351:2350/udp
@@ -91,12 +92,18 @@ services:
       mariadb:
         condition: service_healthy
       trackmania:
-        condition: service_healthy
+        condition: service_started
+    volumes:
+      - TrackManiaUserData/Maps:/server/UserData/Maps
+      - TrackManiaControl/plugins:/controller/plugins
+      # You can also use local directories as volumes
+      #- ./plugins:/controller/plugins # If this volume is enabled, bundled plugins are deleted unless you copy them to your plugins directory
     # Uncomment this if you have already a server.xml file
     #volumes:
       #- ./myserver.xml:/controller/config/server.xml:ro
 
 volumes:
+  TrackManiaControlDatabase:
   TrackManiaControl:
   TrackManiaUserData:
 ```
