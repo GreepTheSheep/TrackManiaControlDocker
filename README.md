@@ -55,12 +55,19 @@ services:
       MARIADB_PASSWORD: maniacontrol
     expose:
       - 3306
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
     volumes:
       - TrackManiaControl:/var/lib/mysql
 
   trackmania:
     image: evoesports/trackmania
     container_name: trackmaniacontrol-server
+    restart: unless-stopped
     environment:
       TM_SYSTEM_XMLRPC_ALLOWREMOTE: "True"
     expose:
@@ -74,6 +81,7 @@ services:
   trackmaniacontrol:
     image: ghcr.io/greepthesheep/trackmaniacontrol
     container_name: trackmaniacontrol-controller
+    restart: unless-stopped
     environment:
       SERVER_HOST: trackmania
       SERVER_PORT: "5001"
@@ -82,6 +90,11 @@ services:
       DATABASE_PASS: maniacontrol
       DATABASE_NAME: trackmaniacontrol
       MASTERADMIN_LOGIN: Jtmn3kBnSSadky_mLNhp_A
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      trackmania:
+        condition: service_healthy
     # Uncomment this if you have already a server.xml file
     #volumes:
       #- ./myserver.xml:/controller/config/server.xml:ro
