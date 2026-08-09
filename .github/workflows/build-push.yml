@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'Dockerfile'
+      - 'entrypoint.sh'
   schedule:
     # rebuild les lundis à 1am UTC
     - cron: '0 1 * * 1'
