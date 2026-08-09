@@ -1,0 +1,31 @@
+name: Build & Push TrackMania Control
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    # rebuild les lundis à 1am UTC
+    - cron: '0 1 * * 1'
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Login to Gitea Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: git.greep.fr
+          username: ${{ vars.CONTAINER_REGISTRY_USER }}
+          password: ${{ secrets.CONTAINER_REGISTRY_PASSWORD }}
+
+      - name: Build & Push to Gitea Container Registry
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: true
+          tags: git.greep.fr/${{ gitea.repository_owner }}/TrackManiaControl:latest
