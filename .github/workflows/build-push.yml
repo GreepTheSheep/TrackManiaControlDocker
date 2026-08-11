@@ -31,12 +31,12 @@ jobs:
         id: labels
         run: |
           DOCKER_IMAGE=ghcr.io/${{ env.REPOSITORY_OWNER }}/trackmaniacontrol
-          VERSION=${{ github.ref }}
+          REV=$(git rev-parse --short HEAD)
           TAGS="${DOCKER_IMAGE}:${VERSION},${DOCKER_IMAGE}:latest"
           echo "tags=${TAGS}" >> "$GITHUB_OUTPUT"
-          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "version=${REV}" >> "$GITHUB_OUTPUT"
           echo "builddate=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
-          echo "revision=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+          echo "revision=${REV}" >> "$GITHUB_OUTPUT"
 
       - name: Login to Container Registry
         uses: docker/login-action@v4
