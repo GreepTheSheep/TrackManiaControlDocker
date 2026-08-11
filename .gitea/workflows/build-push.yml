@@ -23,7 +23,7 @@ jobs:
         id: labels
         run: |
           DOCKER_IMAGE=git.greep.fr/${{ gitea.repository_owner }}/trackmaniacontrol
-          VERSION=${GITHUB_REF#refs/tags/}
+          VERSION=${{ gitea.ref }}
           TAGS="${DOCKER_IMAGE}:${VERSION},${DOCKER_IMAGE}:latest"
           echo "tags=${TAGS}" >> "$GITEA_OUTPUT"
           echo "version=${VERSION}" >> "$GITEA_OUTPUT"
@@ -42,7 +42,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.labels.tags.version }}
+          tags: ${{ steps.labels.outputs.tags }}
           build-args: |
             VERSION=${{ steps.labels.outputs.version }}
             BUILD_DATE=${{ steps.labels.outputs.builddate }}

@@ -30,7 +30,7 @@ jobs:
         id: labels
         run: |
           DOCKER_IMAGE=ghcr.io/${{ env.REPOSITORY_OWNER }}/trackmaniacontrol
-          VERSION=${GITHUB_REF#refs/tags/}
+          VERSION=${{ github.ref }}
           TAGS="${DOCKER_IMAGE}:${VERSION},${DOCKER_IMAGE}:latest"
           echo "tags=${TAGS}" >> "$GITHUB_OUTPUT"
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
