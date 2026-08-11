@@ -19,6 +19,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
+      - name: Get labels
+        id: labels
+        run: |
+          DOCKER_IMAGE=git.greep.fr/${{ gitea.repository_owner }}/trackmaniacontrol
+          VERSION=${GITHUB_REF#refs/tags/}
+          TAGS="${DOCKER_IMAGE}:${VERSION},${DOCKER_IMAGE}:latest"
+          echo "tags=${TAGS}" >> "$GITEA_OUTPUT"
+          echo "version=${VERSION}" >> "$GITEA_OUTPUT"
+          echo "builddate=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITEA_OUTPUT"
+          echo "revision=$(git rev-parse --short HEAD)" >> "$GITEA_OUTPUT"
+
       - name: Login to Gitea Container Registry
         uses: docker/login-action@v4
         with:
@@ -31,4 +42,8 @@ jobs:
         with:
           context: .
           push: true
-          tags: git.greep.fr/${{ gitea.repository_owner }}/trackmaniacontrol:latest
+          tags: ${{ steps.labels.tags.version }}
+          build-args: |
+            VERSION=${{ steps.labels.outputs.version }}
+            BUILD_DATE=${{ steps.labels.outputs.builddate }}
+            REVISION=${{ steps.labels.outputs.revision }}
