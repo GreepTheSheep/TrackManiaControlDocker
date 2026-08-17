@@ -25,7 +25,8 @@ jobs:
         run: |
           DOCKER_IMAGE=git.greep.fr/${{ gitea.repository_owner }}/trackmaniacontrol
           REV=$(git rev-parse --short HEAD)
-          TAGS="${DOCKER_IMAGE}:${REV},${DOCKER_IMAGE}:latest"
+          DATE=$(date -u +%Y%m%d)
+          TAGS="${DOCKER_IMAGE}:${REV},${DOCKER_IMAGE}:${DATE},${DOCKER_IMAGE}:latest"
           echo "tags=${TAGS}" >> "$GITEA_OUTPUT"
           echo "version=${REV}" >> "$GITEA_OUTPUT"
           echo "builddate=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITEA_OUTPUT"

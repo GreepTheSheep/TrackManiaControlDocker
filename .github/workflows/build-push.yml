@@ -32,7 +32,8 @@ jobs:
         run: |
           DOCKER_IMAGE=ghcr.io/${{ env.REPOSITORY_OWNER }}/trackmaniacontrol
           REV=$(git rev-parse --short HEAD)
-          TAGS="${DOCKER_IMAGE}:${REV},${DOCKER_IMAGE}:latest"
+          DATE=$(date -u +%Y%m%d)
+          TAGS="${DOCKER_IMAGE}:${REV},${DOCKER_IMAGE}:${DATE},${DOCKER_IMAGE}:latest"
           echo "tags=${TAGS}" >> "$GITHUB_OUTPUT"
           echo "version=${REV}" >> "$GITHUB_OUTPUT"
           echo "builddate=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
