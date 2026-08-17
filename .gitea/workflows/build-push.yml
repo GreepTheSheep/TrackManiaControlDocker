@@ -28,7 +28,7 @@ jobs:
           DATE=$(date -u +%Y%m%d)
           TAGS="${DOCKER_IMAGE}:${REV},${DOCKER_IMAGE}:${DATE},${DOCKER_IMAGE}:latest"
           echo "tags=${TAGS}" >> "$GITEA_OUTPUT"
-          echo "version=${REV}" >> "$GITEA_OUTPUT"
+          echo "version=${DATE}" >> "$GITEA_OUTPUT"
           echo "builddate=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITEA_OUTPUT"
           echo "revision=${REV}" >> "$GITEA_OUTPUT"
 
