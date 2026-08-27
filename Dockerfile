@@ -25,12 +25,9 @@ RUN docker-php-ext-install \
 
 RUN pecl install channel://pecl.php.net/xmlrpc-1.0.0RC3 && docker-php-ext-enable xmlrpc
 
-RUN true \
-    && set -eux \
-    && addgroup -g 9999 maniacontrol \
+RUN addgroup -g 9999 maniacontrol \
     && adduser -u 9999 -Hh /controller -G maniacontrol -s /sbin/nologin -D maniacontrol \
-    && install -d -o maniacontrol -g maniacontrol -m 775 /controller \
-    && true
+    && install -d -o maniacontrol -g maniacontrol -m 775 /controller
 
 USER maniacontrol
 RUN git clone https://git.virtit.fr/beu/TrackManiaControl.git /controller
@@ -40,9 +37,12 @@ RUN apk del git $PHPIZE_DEPS
 
 WORKDIR /controller
 
-COPY ./entrypoint.sh /controller/
+COPY --chown=maniacontrol:maniacontrol ./entrypoint.sh /controller/
 
-RUN chown maniacontrol:maniacontrol -Rf /controller
+RUN rm -rf .git README.md \
+    && chown maniacontrol:maniacontrol -Rf /controller \
+    && chmod u+x /controller/entrypoint.sh \
+    && chmod g+x /controller/entrypoint.sh
 
 USER maniacontrol
 
