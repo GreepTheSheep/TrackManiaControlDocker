@@ -40,12 +40,13 @@ RUN apk del git $PHPIZE_DEPS
 
 WORKDIR /controller
 
-COPY --chown=0755 ./entrypoint.sh /controller/
+COPY --chown=maniacontrol:maniacontrol ./entrypoint.sh /controller/
 
 RUN true \
     && set -eux \
     && rm -rf .git README.md \
-    && chown maniacontrol:maniacontrol -Rf /controller \
+    && chown maniacontrol:maniacontrol -R /controller \
+    && chown maniacontrol:maniacontrol /controller/entrypoint.sh \
     && true
 
 USER maniacontrol
